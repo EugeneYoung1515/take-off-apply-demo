@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.dao.TakeOffMapper">
+  <resultMap id="BaseResultMap" type="com.smart.domain.TakeOff">
+    <id column="off_id" jdbcType="INTEGER" property="offId" />
+    <result column="off_type" jdbcType="INTEGER" property="offType" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="off_reason" jdbcType="VARCHAR" property="offReason" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="first_check_user_id" jdbcType="INTEGER" property="firstCheckUserId" />
+    <result column="first_check_user_opinion" jdbcType="VARCHAR" property="firstCheckUserOpinion" />
+    <result column="second_check_user_id" jdbcType="INTEGER" property="secondCheckUserId" />
+    <result column="second_check_user_opinion" jdbcType="VARCHAR" property="secondCheckUserOpinion" />
+    <result column="third_check_user_id" jdbcType="INTEGER" property="thirdCheckUserId" />
+    <result column="third_check_user_opinion" jdbcType="VARCHAR" property="thirdCheckUserOpinion" />
+    <result column="first_check_datetime" jdbcType="TIMESTAMP" property="firstCheckDatetime" />
+    <result column="second_check_datetime" jdbcType="TIMESTAMP" property="secondCheckDatetime" />
+    <result column="third_check_datetime" jdbcType="TIMESTAMP" property="thirdCheckDatetime" />
+    <result column="apply_datetime" jdbcType="TIMESTAMP" property="applyDatetime" />
+    <result column="off_status" jdbcType="INTEGER" property="offStatus" />
+    <result column="is_accepted_by_first" jdbcType="INTEGER" property="isAcceptedByFirst" />
+    <result column="is_accepted_by_second" jdbcType="INTEGER" property="isAcceptedBySecond" />
+    <result column="is_accepted_by_third" jdbcType="INTEGER" property="isAcceptedByThird" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    off_id, off_type, start_date, end_date, off_reason, user_id, first_check_user_id, 
+    first_check_user_opinion, second_check_user_id, second_check_user_opinion, third_check_user_id, 
+    third_check_user_opinion, first_check_datetime, second_check_datetime, third_check_datetime, 
+    apply_datetime, off_status, is_accepted_by_first, is_accepted_by_second, is_accepted_by_third
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_take_off
+    where off_id = #{offId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_take_off
+    where off_id = #{offId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.smart.domain.TakeOff">
+    insert into t_take_off (off_id, off_type, start_date, 
+      end_date, off_reason, user_id, 
+      first_check_user_id, first_check_user_opinion, 
+      second_check_user_id, second_check_user_opinion, 
+      third_check_user_id, third_check_user_opinion, 
+      first_check_datetime, second_check_datetime, 
+      third_check_datetime, apply_datetime, 
+      off_status, is_accepted_by_first, is_accepted_by_second, 
+      is_accepted_by_third)
+    values (#{offId,jdbcType=INTEGER}, #{offType,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{offReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{firstCheckUserId,jdbcType=INTEGER}, #{firstCheckUserOpinion,jdbcType=VARCHAR}, 
+      #{secondCheckUserId,jdbcType=INTEGER}, #{secondCheckUserOpinion,jdbcType=VARCHAR}, 
+      #{thirdCheckUserId,jdbcType=INTEGER}, #{thirdCheckUserOpinion,jdbcType=VARCHAR}, 
+      #{firstCheckDatetime,jdbcType=TIMESTAMP}, #{secondCheckDatetime,jdbcType=TIMESTAMP}, 
+      #{thirdCheckDatetime,jdbcType=TIMESTAMP}, #{applyDatetime,jdbcType=TIMESTAMP}, 
+      #{offStatus,jdbcType=INTEGER}, #{isAcceptedByFirst,jdbcType=INTEGER}, #{isAcceptedBySecond,jdbcType=INTEGER}, 
+      #{isAcceptedByThird,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smart.domain.TakeOff">
+    insert into t_take_off
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="offId != null">
+        off_id,
+      </if>
+      <if test="offType != null">
+        off_type,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="offReason != null">
+        off_reason,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="firstCheckUserId != null">
+        first_check_user_id,
+      </if>
+      <if test="firstCheckUserOpinion != null">
+        first_check_user_opinion,
+      </if>
+      <if test="secondCheckUserId != null">
+        second_check_user_id,
+      </if>
+      <if test="secondCheckUserOpinion != null">
+        second_check_user_opinion,
+      </if>
+      <if test="thirdCheckUserId != null">
+        third_check_user_id,
+      </if>
+      <if test="thirdCheckUserOpinion != null">
+        third_check_user_opinion,
+      </if>
+      <if test="firstCheckDatetime != null">
+        first_check_datetime,
+      </if>
+      <if test="secondCheckDatetime != null">
+        second_check_datetime,
+      </if>
+      <if test="thirdCheckDatetime != null">
+        third_check_datetime,
+      </if>
+      <if test="applyDatetime != null">
+        apply_datetime,
+      </if>
+      <if test="offStatus != null">
+        off_status,
+      </if>
+      <if test="isAcceptedByFirst != null">
+        is_accepted_by_first,
+      </if>
+      <if test="isAcceptedBySecond != null">
+        is_accepted_by_second,
+      </if>
+      <if test="isAcceptedByThird != null">
+        is_accepted_by_third,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="offId != null">
+        #{offId,jdbcType=INTEGER},
+      </if>
+      <if test="offType != null">
+        #{offType,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offReason != null">
+        #{offReason,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="firstCheckUserId != null">
+        #{firstCheckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="firstCheckUserOpinion != null">
+        #{firstCheckUserOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="secondCheckUserId != null">
+        #{secondCheckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="secondCheckUserOpinion != null">
+        #{secondCheckUserOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCheckUserId != null">
+        #{thirdCheckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="thirdCheckUserOpinion != null">
+        #{thirdCheckUserOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="firstCheckDatetime != null">
+        #{firstCheckDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="secondCheckDatetime != null">
+        #{secondCheckDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thirdCheckDatetime != null">
+        #{thirdCheckDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyDatetime != null">
+        #{applyDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offStatus != null">
+        #{offStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isAcceptedByFirst != null">
+        #{isAcceptedByFirst,jdbcType=INTEGER},
+      </if>
+      <if test="isAcceptedBySecond != null">
+        #{isAcceptedBySecond,jdbcType=INTEGER},
+      </if>
+      <if test="isAcceptedByThird != null">
+        #{isAcceptedByThird,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smart.domain.TakeOff">
+    update t_take_off
+    <set>
+      <if test="offType != null">
+        off_type = #{offType,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offReason != null">
+        off_reason = #{offReason,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="firstCheckUserId != null">
+        first_check_user_id = #{firstCheckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="firstCheckUserOpinion != null">
+        first_check_user_opinion = #{firstCheckUserOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="secondCheckUserId != null">
+        second_check_user_id = #{secondCheckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="secondCheckUserOpinion != null">
+        second_check_user_opinion = #{secondCheckUserOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCheckUserId != null">
+        third_check_user_id = #{thirdCheckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="thirdCheckUserOpinion != null">
+        third_check_user_opinion = #{thirdCheckUserOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="firstCheckDatetime != null">
+        first_check_datetime = #{firstCheckDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="secondCheckDatetime != null">
+        second_check_datetime = #{secondCheckDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="thirdCheckDatetime != null">
+        third_check_datetime = #{thirdCheckDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyDatetime != null">
+        apply_datetime = #{applyDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offStatus != null">
+        off_status = #{offStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isAcceptedByFirst != null">
+        is_accepted_by_first = #{isAcceptedByFirst,jdbcType=INTEGER},
+      </if>
+      <if test="isAcceptedBySecond != null">
+        is_accepted_by_second = #{isAcceptedBySecond,jdbcType=INTEGER},
+      </if>
+      <if test="isAcceptedByThird != null">
+        is_accepted_by_third = #{isAcceptedByThird,jdbcType=INTEGER},
+      </if>
+    </set>
+    where off_id = #{offId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smart.domain.TakeOff">
+    update t_take_off
+    set off_type = #{offType,jdbcType=INTEGER},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      off_reason = #{offReason,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      first_check_user_id = #{firstCheckUserId,jdbcType=INTEGER},
+      first_check_user_opinion = #{firstCheckUserOpinion,jdbcType=VARCHAR},
+      second_check_user_id = #{secondCheckUserId,jdbcType=INTEGER},
+      second_check_user_opinion = #{secondCheckUserOpinion,jdbcType=VARCHAR},
+      third_check_user_id = #{thirdCheckUserId,jdbcType=INTEGER},
+      third_check_user_opinion = #{thirdCheckUserOpinion,jdbcType=VARCHAR},
+      first_check_datetime = #{firstCheckDatetime,jdbcType=TIMESTAMP},
+      second_check_datetime = #{secondCheckDatetime,jdbcType=TIMESTAMP},
+      third_check_datetime = #{thirdCheckDatetime,jdbcType=TIMESTAMP},
+      apply_datetime = #{applyDatetime,jdbcType=TIMESTAMP},
+      off_status = #{offStatus,jdbcType=INTEGER},
+      is_accepted_by_first = #{isAcceptedByFirst,jdbcType=INTEGER},
+      is_accepted_by_second = #{isAcceptedBySecond,jdbcType=INTEGER},
+      is_accepted_by_third = #{isAcceptedByThird,jdbcType=INTEGER}
+    where off_id = #{offId,jdbcType=INTEGER}
+  </update>
+  <select id="selectTakeOffByUserIdOrderByIdLimitOne" resultMap="BaseResultMap">
+    select * from t_take_off where user_id = #{userId} order by off_id desc limit 1
+  </select>
+  <select id="selectTakeOffByStatusOrderByIdLimitOne" resultMap="BaseResultMap">
+    select * from t_take_off where off_status = #{offStatus} order by off_id desc limit 1
+  </select>
+</mapper>

@@ -1,0 +1,16 @@
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/domain/TakeOff.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/statuscodeconstant/UserTypeCons.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/domain/ApprovalStatus.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/shiro/AfterShiroFilter.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/statuscodeconstant/TakeOffType.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/domain/User.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/pardao/UserParMapper.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/statuscodeconstant/EveryApprovalCode.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/dao/TakeOffMapper.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/service/UserService.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/shiro/MyShiroRealm.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/pardomain/ParTakeOff.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/dao/UserMapper.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/web/LoginController.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/pardao/TakeOffParMapper.java
+/Users/eugeneyoung/Downloads/应聘demo/offapply/src/main/java/com/smart/statuscodeconstant/TakeOffStatusCode.java
