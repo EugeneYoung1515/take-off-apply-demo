@@ -146,6 +146,12 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.streamsupport</groupId>
+            <artifactId>streamsupport</artifactId>
+            <version>1.7.0</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -7,6 +7,8 @@ import com.smart.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private UserMapper userMapper;
@@ -25,6 +27,11 @@ public class UserService {
     public void applyTakeOff(TakeOff takeOff){
         takeOffMapper.insert(takeOff);
     }
+
+    public Integer applyTakeOffReturnId(TakeOff takeOff){
+        return takeOffMapper.insertReturnId(takeOff);
+    }
+
 
     public TakeOff findTakeOffByUserId(Integer userId){
         return takeOffMapper.selectTakeOffByUserIdOrderByIdLimitOne(userId);
@@ -52,6 +59,14 @@ public class UserService {
 
     public TakeOff findTakeOffById(Integer offId){
         return takeOffMapper.selectByPrimaryKey(offId);
+    }
+
+    public List<TakeOff> findAllTakeOfByUserId(Integer userId, Integer page, Integer pageNum){
+        return takeOffMapper.selectAllTakeOffByUserId(userId,(pageNum-1)*page,page);
+    }
+
+    public Integer countTakeOffByUserId(Integer userId){
+        return takeOffMapper.selectCountTakeOffByUserId(userId);
     }
 
     @Autowired

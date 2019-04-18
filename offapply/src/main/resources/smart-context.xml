@@ -49,6 +49,7 @@
 
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"
 		  p:securityManager-ref="securityManager"
+		  p:unauthorizedUrl="/403.html"
 		  p:successUrl="/main.html"
 		  p:loginUrl="/login.html">
 
@@ -57,6 +58,9 @@
 				<entry key="/login.html" value="authc"/>
 				<entry key="/logout.html" value="logout"/>
 				<entry key="/layui/**" value="anon"/>
+				<entry key="/apply.html" value="authc,perms[apply]"/>
+				<entry key="/apply/update.html" value="authc,perms[update]"/>
+				<entry key="/apply/notaccepted/update.html" value="authc,perms[update]"/>
 				<entry key="/**" value="authc"/>
 			</map>
 		</property>

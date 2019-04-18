@@ -3,6 +3,7 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!DOCTYPE html>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -26,9 +27,7 @@
     <c:if test="${takeOff.offStatus == 3}">
         <c:set var="currentTime" value="<%= new Date()%>"></c:set>
     <c:if test="${currentTime.time > takeOff.endDate.time}">
-        <a href="<c:out value="apply.html"/>">
         <button id="btn2" class="layui-btn layui-btn-warm">请假申请</button>
-    </a>
     </c:if>
     </c:if>
 
@@ -52,6 +51,7 @@
             <button id="btn6" class="layui-btn layui-btn-normal">修改被驳回的请假单</button>
     </c:if>
 
+    <button id="btn8" class="layui-btn layui-btn-danger"><i class="layui-icon">&#xe664;</i> 查看历史请假单</button>
     <c:if test="${againstLostUser.userType > 0}">
         <button id="btn7" class="layui-btn"><i class="layui-icon">&#xe665;</i> 审批请假单</button>
     </c:if>
@@ -231,6 +231,22 @@
 });
                     layer.full(index);
                 });
+
+                $(document).on('click','#btn8',function(){
+                    var index = layer.open({
+                        type: 2,
+                        area: ['1000px', '600px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: '<c:out value="off/history"/>',
+                        cancel: function(index, layero){
+                            location.reload();
+                            return false;
+                        }
+                    });
+                    layer.full(index);
+                });
+
             });
         </script>
 </body>

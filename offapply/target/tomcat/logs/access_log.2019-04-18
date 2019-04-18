@@ -1,0 +1,11 @@
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:39:32 +0800] "GET /offapply/apply/view/notaccepted?id=87 HTTP/1.1" 302 - http-bio-8081-exec-1 46
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:39:33 +0800] "GET /offapply/login.html HTTP/1.1" 200 1296 http-bio-8081-exec-3 775
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:39:39 +0800] "POST /offapply/login.html HTTP/1.1" 302 - http-bio-8081-exec-4 253
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:39:39 +0800] "GET /offapply/apply/view/notaccepted?id=87 HTTP/1.1" 200 4939 http-bio-8081-exec-5 116
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:39:39 +0800] "GET /offapply/apply/view/notaccepted/data.json?id=87&page=1&limit=10 HTTP/1.1" 200 802 http-bio-8081-exec-6 95
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:40:01 +0800] "GET /offapply/apply/view/notaccepted?id=87 HTTP/1.1" 200 4939 http-bio-8081-exec-7 5
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:40:01 +0800] "GET /offapply/apply/view/notaccepted/data.json?id=87&page=1&limit=10 HTTP/1.1" 200 800 http-bio-8081-exec-9 15
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:40:03 +0800] "GET /offapply/apply/view/notaccepted?id=86 HTTP/1.1" 200 4939 http-bio-8081-exec-10 5
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:40:03 +0800] "GET /offapply/apply/view/notaccepted/data.json?id=86&page=1&limit=10 HTTP/1.1" 200 805 http-bio-8081-exec-10 14
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:40:27 +0800] "GET /offapply/apply/view/notaccepted?id=87 HTTP/1.1" 200 4939 http-bio-8081-exec-10 4
+0:0:0:0:0:0:0:1 - - [18/Apr/2019:14:40:27 +0800] "GET /offapply/apply/view/notaccepted/data.json?id=87&page=1&limit=10 HTTP/1.1" 200 802 http-bio-8081-exec-10 16

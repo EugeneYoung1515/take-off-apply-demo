@@ -50,6 +50,8 @@ public class TakeOff extends ParTakeOff implements Serializable{
 
     private Integer isAcceptedByThird;
 
+    private Integer previousIsNotAcceptedOffId;
+
     public Integer getOffId() {
         return offId;
     }
@@ -209,6 +211,15 @@ public class TakeOff extends ParTakeOff implements Serializable{
     public void setIsAcceptedByThird(Integer isAcceptedByThird) {
         this.isAcceptedByThird = isAcceptedByThird;
     }
+
+    public Integer getPreviousIsNotAcceptedOffId() {
+        return previousIsNotAcceptedOffId;
+    }
+
+    public void setPreviousIsNotAcceptedOffId(Integer previousIsNotAcceptedOffId) {
+        this.previousIsNotAcceptedOffId = previousIsNotAcceptedOffId;
+    }
+
 
     @Override
     public String toString() {

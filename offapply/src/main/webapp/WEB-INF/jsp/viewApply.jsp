@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>查看请假单</title>
@@ -32,6 +33,11 @@
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail3">查看</a>
     {{#  } }}
 </script>
+<script type="text/html" id="barDemo5">
+    {{#  if(d.previousIsNotAcceptedOffId){ }}
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail4">查看被驳回的内容</a>
+    {{#  } }}
+</script>
 
 
 <script src="layui/layui.js"></script>
@@ -53,6 +59,7 @@
                 ,{field:'endDate', title: '结束时间', width:150}
                 ,{field:'offReason', title: '原因', width:80, toolbar:"#barDemo"}
                 ,{field:'applyDatetime', title: '申请日期', width:150}
+                ,{field:'previous', title: '被驳回', width:150, toolbar:"#barDemo5"}
                 //,{field:'firstCheckUserName', title: '一级审批', width:60}
                 ,{field:'firstCheckUserOpinion', title: '一级审批意见', width:70, toolbar:"#barDemo1"}
                 ,{field:'isAcceptedByFirstChinese', title: '同/驳', width:80}
@@ -82,8 +89,10 @@
                 look(data,2);
             }else if(obj.event === 'detail3'){
                 look(data,3);
-            }
-            else if(obj.event === 'check'){
+            }else if(obj.event === 'detail4'){
+                var url = "apply/view/notaccepted?id="+data.previousIsNotAcceptedOffId;
+                window.open(url);
+            }else if(obj.event === 'check'){
                 layer.open({
                     type: 2,
                     area: ['1100px', '700px'],

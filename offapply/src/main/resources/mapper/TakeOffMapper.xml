@@ -22,15 +22,17 @@
     <result column="is_accepted_by_first" jdbcType="INTEGER" property="isAcceptedByFirst" />
     <result column="is_accepted_by_second" jdbcType="INTEGER" property="isAcceptedBySecond" />
     <result column="is_accepted_by_third" jdbcType="INTEGER" property="isAcceptedByThird" />
+    <result column="previous_is_not_accepted_off_id" jdbcType="INTEGER" property="previousIsNotAcceptedOffId" />
   </resultMap>
   <sql id="Base_Column_List">
-    off_id, off_type, start_date, end_date, off_reason, user_id, first_check_user_id, 
-    first_check_user_opinion, second_check_user_id, second_check_user_opinion, third_check_user_id, 
-    third_check_user_opinion, first_check_datetime, second_check_datetime, third_check_datetime, 
-    apply_datetime, off_status, is_accepted_by_first, is_accepted_by_second, is_accepted_by_third
+    off_id, off_type, start_date, end_date, off_reason, user_id, first_check_user_id,
+    first_check_user_opinion, second_check_user_id, second_check_user_opinion, third_check_user_id,
+    third_check_user_opinion, first_check_datetime, second_check_datetime, third_check_datetime,
+    apply_datetime, off_status, is_accepted_by_first, is_accepted_by_second, is_accepted_by_third,
+    previous_is_not_accepted_off_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_take_off
     where off_id = #{offId,jdbcType=INTEGER}
@@ -40,24 +42,26 @@
     where off_id = #{offId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.smart.domain.TakeOff">
-    insert into t_take_off (off_id, off_type, start_date, 
-      end_date, off_reason, user_id, 
-      first_check_user_id, first_check_user_opinion, 
-      second_check_user_id, second_check_user_opinion, 
-      third_check_user_id, third_check_user_opinion, 
-      first_check_datetime, second_check_datetime, 
-      third_check_datetime, apply_datetime, 
-      off_status, is_accepted_by_first, is_accepted_by_second, 
-      is_accepted_by_third)
-    values (#{offId,jdbcType=INTEGER}, #{offType,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
-      #{endDate,jdbcType=TIMESTAMP}, #{offReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{firstCheckUserId,jdbcType=INTEGER}, #{firstCheckUserOpinion,jdbcType=VARCHAR}, 
-      #{secondCheckUserId,jdbcType=INTEGER}, #{secondCheckUserOpinion,jdbcType=VARCHAR}, 
-      #{thirdCheckUserId,jdbcType=INTEGER}, #{thirdCheckUserOpinion,jdbcType=VARCHAR}, 
-      #{firstCheckDatetime,jdbcType=TIMESTAMP}, #{secondCheckDatetime,jdbcType=TIMESTAMP}, 
-      #{thirdCheckDatetime,jdbcType=TIMESTAMP}, #{applyDatetime,jdbcType=TIMESTAMP}, 
-      #{offStatus,jdbcType=INTEGER}, #{isAcceptedByFirst,jdbcType=INTEGER}, #{isAcceptedBySecond,jdbcType=INTEGER}, 
-      #{isAcceptedByThird,jdbcType=INTEGER})
+    insert into t_take_off (off_id, off_type, start_date,
+    end_date, off_reason, user_id,
+    first_check_user_id, first_check_user_opinion,
+    second_check_user_id, second_check_user_opinion,
+    third_check_user_id, third_check_user_opinion,
+    first_check_datetime, second_check_datetime,
+    third_check_datetime, apply_datetime,
+    off_status, is_accepted_by_first, is_accepted_by_second,
+    is_accepted_by_third, previous_is_not_accepted_off_id
+    )
+    values (#{offId,jdbcType=INTEGER}, #{offType,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP},
+    #{endDate,jdbcType=TIMESTAMP}, #{offReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+    #{firstCheckUserId,jdbcType=INTEGER}, #{firstCheckUserOpinion,jdbcType=VARCHAR},
+    #{secondCheckUserId,jdbcType=INTEGER}, #{secondCheckUserOpinion,jdbcType=VARCHAR},
+    #{thirdCheckUserId,jdbcType=INTEGER}, #{thirdCheckUserOpinion,jdbcType=VARCHAR},
+    #{firstCheckDatetime,jdbcType=TIMESTAMP}, #{secondCheckDatetime,jdbcType=TIMESTAMP},
+    #{thirdCheckDatetime,jdbcType=TIMESTAMP}, #{applyDatetime,jdbcType=TIMESTAMP},
+    #{offStatus,jdbcType=INTEGER}, #{isAcceptedByFirst,jdbcType=INTEGER}, #{isAcceptedBySecond,jdbcType=INTEGER},
+    #{isAcceptedByThird,jdbcType=INTEGER}, #{previousIsNotAcceptedOffId,jdbcType=INTEGER}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.smart.domain.TakeOff">
     insert into t_take_off
@@ -122,6 +126,9 @@
       <if test="isAcceptedByThird != null">
         is_accepted_by_third,
       </if>
+      <if test="previousIsNotAcceptedOffId != null">
+        previous_is_not_accepted_off_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="offId != null">
@@ -183,6 +190,9 @@
       </if>
       <if test="isAcceptedByThird != null">
         #{isAcceptedByThird,jdbcType=INTEGER},
+      </if>
+      <if test="previousIsNotAcceptedOffId != null">
+        #{previousIsNotAcceptedOffId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -246,30 +256,34 @@
       <if test="isAcceptedByThird != null">
         is_accepted_by_third = #{isAcceptedByThird,jdbcType=INTEGER},
       </if>
+      <if test="previousIsNotAcceptedOffId != null">
+        previous_is_not_accepted_off_id = #{previousIsNotAcceptedOffId,jdbcType=INTEGER},
+      </if>
     </set>
     where off_id = #{offId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.smart.domain.TakeOff">
     update t_take_off
     set off_type = #{offType,jdbcType=INTEGER},
-      start_date = #{startDate,jdbcType=TIMESTAMP},
-      end_date = #{endDate,jdbcType=TIMESTAMP},
-      off_reason = #{offReason,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
-      first_check_user_id = #{firstCheckUserId,jdbcType=INTEGER},
-      first_check_user_opinion = #{firstCheckUserOpinion,jdbcType=VARCHAR},
-      second_check_user_id = #{secondCheckUserId,jdbcType=INTEGER},
-      second_check_user_opinion = #{secondCheckUserOpinion,jdbcType=VARCHAR},
-      third_check_user_id = #{thirdCheckUserId,jdbcType=INTEGER},
-      third_check_user_opinion = #{thirdCheckUserOpinion,jdbcType=VARCHAR},
-      first_check_datetime = #{firstCheckDatetime,jdbcType=TIMESTAMP},
-      second_check_datetime = #{secondCheckDatetime,jdbcType=TIMESTAMP},
-      third_check_datetime = #{thirdCheckDatetime,jdbcType=TIMESTAMP},
-      apply_datetime = #{applyDatetime,jdbcType=TIMESTAMP},
-      off_status = #{offStatus,jdbcType=INTEGER},
-      is_accepted_by_first = #{isAcceptedByFirst,jdbcType=INTEGER},
-      is_accepted_by_second = #{isAcceptedBySecond,jdbcType=INTEGER},
-      is_accepted_by_third = #{isAcceptedByThird,jdbcType=INTEGER}
+    start_date = #{startDate,jdbcType=TIMESTAMP},
+    end_date = #{endDate,jdbcType=TIMESTAMP},
+    off_reason = #{offReason,jdbcType=VARCHAR},
+    user_id = #{userId,jdbcType=INTEGER},
+    first_check_user_id = #{firstCheckUserId,jdbcType=INTEGER},
+    first_check_user_opinion = #{firstCheckUserOpinion,jdbcType=VARCHAR},
+    second_check_user_id = #{secondCheckUserId,jdbcType=INTEGER},
+    second_check_user_opinion = #{secondCheckUserOpinion,jdbcType=VARCHAR},
+    third_check_user_id = #{thirdCheckUserId,jdbcType=INTEGER},
+    third_check_user_opinion = #{thirdCheckUserOpinion,jdbcType=VARCHAR},
+    first_check_datetime = #{firstCheckDatetime,jdbcType=TIMESTAMP},
+    second_check_datetime = #{secondCheckDatetime,jdbcType=TIMESTAMP},
+    third_check_datetime = #{thirdCheckDatetime,jdbcType=TIMESTAMP},
+    apply_datetime = #{applyDatetime,jdbcType=TIMESTAMP},
+    off_status = #{offStatus,jdbcType=INTEGER},
+    is_accepted_by_first = #{isAcceptedByFirst,jdbcType=INTEGER},
+    is_accepted_by_second = #{isAcceptedBySecond,jdbcType=INTEGER},
+    is_accepted_by_third = #{isAcceptedByThird,jdbcType=INTEGER},
+    previous_is_not_accepted_off_id = #{previousIsNotAcceptedOffId,jdbcType=INTEGER}
     where off_id = #{offId,jdbcType=INTEGER}
   </update>
   <select id="selectTakeOffByUserIdOrderByIdLimitOne" resultMap="BaseResultMap">
@@ -277,5 +291,57 @@
   </select>
   <select id="selectTakeOffByStatusOrderByIdLimitOne" resultMap="BaseResultMap">
     select * from t_take_off where off_status = #{offStatus} order by off_id desc limit 1
+  </select>
+
+  <resultMap id="TakeOffBaseResultMap" type="com.smart.domain.TakeOff" extends="BaseResultMap">
+    <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+    <result column="first_user_name" jdbcType="VARCHAR" property="firstCheckUserName"/>
+    <result column="second_user_name" jdbcType="VARCHAR" property="secondCheckUserName"/>
+    <result column="third_user_name" jdbcType="VARCHAR" property="thirdCheckUserName"/>
+  </resultMap>
+
+
+  <select id="selectAllTakeOffByUserId" resultMap="TakeOffBaseResultMap">
+select
+off_id, off_type, start_date, end_date, off_reason, t.user_id, first_check_user_id,
+first_check_user_opinion, second_check_user_id, second_check_user_opinion, third_check_user_id,
+third_check_user_opinion, first_check_datetime, second_check_datetime, third_check_datetime,
+apply_datetime, off_status, is_accepted_by_first, is_accepted_by_second, is_accepted_by_third,
+previous_is_not_accepted_off_id,
+b.user_name as user_name,
+p.user_name as first_user_name,
+pp.user_name as second_user_name,
+ppp.user_name as third_user_name
+from (select * from t_take_off where user_id = #{param1} order by off_id desc limit #{param2}, #{param3}) as t left outer join t_user as b on t.user_id = b.user_id left outer join t_user as p
+on t.first_check_user_id = p.user_id left outer join t_user as pp
+on t.second_check_user_id = pp.user_id left outer join t_user as ppp
+on t.third_check_user_id = ppp.user_id
+  </select>
+
+  <insert id="insertReturnId" parameterType="com.smart.domain.TakeOff" useGeneratedKeys="true" keyColumn="off_id" keyProperty="offId">
+    insert into t_take_off (off_id, off_type, start_date,
+    end_date, off_reason, user_id,
+    first_check_user_id, first_check_user_opinion,
+    second_check_user_id, second_check_user_opinion,
+    third_check_user_id, third_check_user_opinion,
+    first_check_datetime, second_check_datetime,
+    third_check_datetime, apply_datetime,
+    off_status, is_accepted_by_first, is_accepted_by_second,
+    is_accepted_by_third, previous_is_not_accepted_off_id
+    )
+    values (#{offId,jdbcType=INTEGER}, #{offType,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP},
+    #{endDate,jdbcType=TIMESTAMP}, #{offReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+    #{firstCheckUserId,jdbcType=INTEGER}, #{firstCheckUserOpinion,jdbcType=VARCHAR},
+    #{secondCheckUserId,jdbcType=INTEGER}, #{secondCheckUserOpinion,jdbcType=VARCHAR},
+    #{thirdCheckUserId,jdbcType=INTEGER}, #{thirdCheckUserOpinion,jdbcType=VARCHAR},
+    #{firstCheckDatetime,jdbcType=TIMESTAMP}, #{secondCheckDatetime,jdbcType=TIMESTAMP},
+    #{thirdCheckDatetime,jdbcType=TIMESTAMP}, #{applyDatetime,jdbcType=TIMESTAMP},
+    #{offStatus,jdbcType=INTEGER}, #{isAcceptedByFirst,jdbcType=INTEGER}, #{isAcceptedBySecond,jdbcType=INTEGER},
+    #{isAcceptedByThird,jdbcType=INTEGER}, #{previousIsNotAcceptedOffId,jdbcType=INTEGER}
+    )
+  </insert>
+
+  <select id="selectCountTakeOffByUserId" resultType="java.lang.Integer">
+    select count(*) from t_take_off where user_id = #{userId}
   </select>
 </mapper>

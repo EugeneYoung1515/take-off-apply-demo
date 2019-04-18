@@ -1,7 +1,7 @@
 package com.smart.pardomain;
 
 public class ParTakeOff {
-    private String UserName;
+    private String userName;
     private String offTypeName;
     private String firstCheckUserName;
     private String secondCheckUserName;
@@ -14,11 +14,11 @@ public class ParTakeOff {
     private String isAcceptedByThirdChinese;
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        UserName = userName;
+        this.userName = userName;
     }
 
     public String getOffTypeName() {

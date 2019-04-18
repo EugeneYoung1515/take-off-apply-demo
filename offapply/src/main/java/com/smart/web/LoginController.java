@@ -12,6 +12,10 @@ import com.smart.statuscodeconstant.EveryApprovalCode;
 import com.smart.statuscodeconstant.TakeOffStatusCode;
 import com.smart.statuscodeconstant.TakeOffType;
 import com.smart.statuscodeconstant.UserTypeCons;
+import java8.util.function.Consumer;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Controller;
@@ -89,6 +93,50 @@ public class LoginController{
 	}
 	*/
 
+	@RequestMapping(value = "/off/history")
+	public String offHistoryPage(){
+		return "offHistoryPage";
+	}
+
+	@RequestMapping(value = "/off/history/data")
+	@ResponseBody
+	public Map<String,Object> offHistoryDate(HttpSession session, Integer page, Integer limit){
+		User user = (User)session.getAttribute("user");
+		List<TakeOff> parTakeOffs = userService.findAllTakeOfByUserId(user.getUserId(),limit,page);
+		List<ParTakeOff> newParTakeOffs = StreamSupport.stream(parTakeOffs).peek(new Consumer<ParTakeOff>() {
+			@Override
+			public void accept(ParTakeOff e) {
+				TakeOff takeOff = (TakeOff)e;
+				e.setIsAcceptedByFirstChinese(translator(takeOff.getIsAcceptedByFirst()));
+				e.setIsAcceptedBySecondChinese(translator(takeOff.getIsAcceptedBySecond()));
+				e.setIsAcceptedByThirdChinese(translator(takeOff.getIsAcceptedByThird()));
+			}
+		}).peek(new Consumer<ParTakeOff>() {
+			@Override
+			public void accept(ParTakeOff takeOff1) {
+				TakeOff takeOff =(TakeOff)takeOff1;
+				if(takeOff.getOffType().equals(TakeOffType.Year_Off)){
+					takeOff1.setOffTypeName("年假");
+				}
+				if(takeOff.getOffType().equals(TakeOffType.Thing_Off)){
+					takeOff1.setOffTypeName("事假");
+				}
+				if(takeOff.getOffType().equals(TakeOffType.Sick_Off)){
+					takeOff1.setOffTypeName("病假");
+				}
+
+			}
+		}).collect(Collectors.<ParTakeOff>toList());
+
+		Map<String,Object> map = new HashMap<>(16);
+		map.put("code",0);
+		map.put("msg","");
+		map.put("count",userService.countTakeOffByUserId(user.getUserId()));
+		map.put("data",newParTakeOffs);
+		System.out.println(map);
+		return map;
+	}
+
 	@RequestMapping(value = "/apply")
 	public String takeOffForm(){
 		return "applyForm";
@@ -153,8 +201,8 @@ public class LoginController{
 	private Map<String,Object> commonMethod3(ParTakeOff takeOff){
 		Map<String,Object> map = new HashMap<>(16);
 		map.put("code",0);
-		map.put("message","");
-		map.put("total",1000);
+		map.put("msg","");
+		map.put("count",1000);
 		if(takeOff != null) {
 			commonMethod2(takeOff);
 			List<ParTakeOff> list = new ArrayList<>(10);
@@ -170,11 +218,13 @@ public class LoginController{
 	}
 
 	private String translator(Integer code){
-		if(code.equals(EveryApprovalCode.Accept)){
-			return "同意";
-		}
-		if(code.equals(EveryApprovalCode.NotAccept)){
-			return "驳回";
+		if(code!=null) {
+			if (code.equals(EveryApprovalCode.Accept)) {
+				return "同意";
+			}
+			if (code.equals(EveryApprovalCode.NotAccept)) {
+				return "驳回";
+			}
 		}
 		return null;
 	}
@@ -366,7 +416,7 @@ public class LoginController{
 	@RequestMapping(value = "/apply/notaccepted/update")
 	public ModelAndView updateNotAcceptedApply(HttpSession session,@RequestParam(value = "mode",required = false) String mode){
 		ModelAndView modelAndView = updateApply(session,mode);
-		modelAndView.addObject("changeUrl","/apply/notaccepted/update/submit");
+		modelAndView.addObject("changeUrl","apply/notaccepted/update/submit");
 		return modelAndView;
 	}
 
@@ -374,7 +424,7 @@ public class LoginController{
 	public ModelAndView updateNotAcceptedApplyResult(TakeOff takeOff,RedirectAttributes redirectAttributes){
 		TakeOff newTakeOff = new TakeOff();
 		newTakeOff.setOffStatus(TakeOffStatusCode.Off_Prepared);
-		newTakeOff.setOffId(takeOff.getOffId());
+		newTakeOff.setPreviousIsNotAcceptedOffId(takeOff.getOffId());
 		newTakeOff.setApplyDatetime(takeOff.getApplyDatetime());
 		newTakeOff.setStartDate(takeOff.getStartDate());
 		newTakeOff.setEndDate(takeOff.getEndDate());
@@ -384,10 +434,12 @@ public class LoginController{
 		newTakeOff.setUserId(takeOff.getUserId());
 
 		//System.out.println(newTakeOff.getOffStatus());
-		userService.updateTakeOffIfPropertyNull(takeOff);
+		//userService.updateTakeOffIfPropertyNull(takeOff);
+
+		Integer id = userService.applyTakeOffReturnId(newTakeOff);
 
 		TakeOff newTakeOff2 = new TakeOff();
-		newTakeOff2.setOffId(takeOff.getOffId());
+		newTakeOff2.setOffId(id);
 		newTakeOff2.setOffStatus(TakeOffStatusCode.Off_Prepared);
 		userService.updateTakeOff(newTakeOff2);
 
@@ -400,6 +452,23 @@ public class LoginController{
 		return new ModelAndView("redirect:/message.html");
 	}
 
+	@RequestMapping(value = "/apply/view/notaccepted")
+	public ModelAndView viewApplyIsNotAccepted(Integer id){
+		ModelAndView modelAndView = new ModelAndView("viewApplyNotAccepted");
+		modelAndView.addObject("id",id);
+		return modelAndView;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/apply/view/notaccepted/data")//这里不好 能拿到所有数据
+	public Map<String,Object> viewApplyIsNotAcceptedData(Integer id){
+		return commonMethod3(userService.findTakeOffById(id));
+	}
+
+	@RequestMapping(value = "/403")
+	public String unauthorizedPage(){
+		return "403";
+	}
 
 	@Autowired
 	public void setUserService(UserService userService) {

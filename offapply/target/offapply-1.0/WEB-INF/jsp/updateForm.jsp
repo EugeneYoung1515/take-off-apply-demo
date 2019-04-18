@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>修改请假单</title>
@@ -11,6 +12,20 @@
 
     <base href="<%=basePath%>">
     <link rel="stylesheet" href="layui/css/layui.css">
+    <style type="text/css">
+        .layui-laydate-content>.layui-laydate-list {
+            padding-bottom: 0px;
+            overflow: hidden;
+        }
+        .layui-laydate-content>.layui-laydate-list>li{
+            width:50%
+        }
+
+        .merge-box .scrollbox .merge-list {
+            padding-bottom: 5px;
+        }
+
+    </style>
 </head>
 <body>
     <table class="layui-hide" id="LAY_table_user" lay-filter="useruv"></table>
@@ -32,9 +47,15 @@
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail3">查看</a>
         {{#  } }}
     </script>
+    <script type="text/html" id="barDemo5">
+        {{#  if(d.previousIsNotAcceptedOffId){ }}
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail4">查看被驳回的内容</a>
+        {{#  } }}
+    </script>
 
-<c:if test="${changeUrl != null}">
-<form class="layui-form" action="/offcheck${changeUrl}.html" method="post">
+
+    <c:if test="${changeUrl != null}">
+<form class="layui-form" action="${changeUrl}.html" method="post">
 </c:if>
     <c:if test="${changeUrl == null}">
     <form class="layui-form" action="apply/update/submit.html" method="post">
@@ -75,13 +96,13 @@
             <div class="layui-inline">
               <label class="layui-form-label">开始时间</label>
               <div class="layui-input-inline">
-                <input type="text" name="startDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${takeOff.startDate}"/>" class="layui-input" id="startDate" >
+                <input type="text" name="startDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${takeOff.startDate}"/>" class="layui-input" id="sstartDate" >
               </div>
             </div>
             <div class="layui-inline">
               <label class="layui-form-label">结束时间</label>
               <div class="layui-input-inline">
-                <input type="text" name="endDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${takeOff.endDate}"/>" class="layui-input" id="endDate" >
+                <input type="text" name="endDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${takeOff.endDate}"/>" class="layui-input" id="sendDate" >
               </div>
             </div>
           </div>
@@ -116,11 +137,10 @@
 </body>
 <script src="layui/layui.js"></script>
 <script>
-    layui.use(['table','layer', 'form', 'laydate','jquery'], function(){
+    layui.use(['table','layer', 'jquery'], function(){
         var table = layui.table;
         var layer = layui.layer;
         var $ = layui.jquery;
-        var laydate = layui.laydate;
 
         //方法级渲染
         table.render({
@@ -134,6 +154,7 @@
                 ,{field:'endDate', title: '结束时间', width:150}
                 ,{field:'offReason', title: '原因', width:80, toolbar:"#barDemo"}
                 ,{field:'applyDatetime', title: '申请日期', width:150}
+                ,{field:'previous', title: '被驳回', width:150, toolbar:"#barDemo5"}
                 //,{field:'firstCheckUserName', title: '一级审批', width:60}
                 ,{field:'firstCheckUserOpinion', title: '一级审批意见', width:70, toolbar:"#barDemo1"}
                 ,{field:'isAcceptedByFirstChinese', title: '同/驳', width:80}
@@ -163,8 +184,10 @@
                 look(data,2);
             }else if(obj.event === 'detail3'){
                 look(data,3);
-            }
-            else if(obj.event === 'check'){
+            }else if(obj.event === 'detail4'){
+                var url = "apply/view/notaccepted?id="+data.previousIsNotAcceptedOffId;
+                window.open(url);
+            }else if(obj.event === 'check'){
                 layer.open({
                     type: 2,
                     area: ['1100px', '700px'],
@@ -196,37 +219,48 @@
 
             });
         }
+    });
+</script>
+<script type="text/javascript">
+    layui.use(['form', 'laydate',"jquery"], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,$ = layui.jquery
+            ,laydate = layui.laydate;
+        var nowTime = new Date().valueOf();
 
-                var start = laydate.render({ 
-                elem: '#startDate',
-                min:nowTime,
-                type: 'datetime',
-                done:function(value,date){
-                  if($.trim(value) == ''){
-                       var curDate = new Date();
-                       date = {'date': curDate.getDate(), 'month': curDate.getMonth()+1, 'year': curDate.getFullYear(), 'hours': curDate.getHours(), 'minutes': curDate.getMinutes(), 'seconds': curDate.getSeconds()};
-                   }
-                    endMax = end.config.max;
-                    end.config.min = date;
-                    end.config.min.month = date.month -1;
+        //日期
+        var start = laydate.render({
+            elem: '#sstartDate',
+            min:nowTime,
+            type: 'datetime',
+            trigger: 'click',
+            done:function(value,date){
+                if($.trim(value) == ''){
+                    var curDate = new Date();
+                    date = {'date': curDate.getDate(), 'month': curDate.getMonth()+1, 'year': curDate.getFullYear(), 'hours': curDate.getHours(), 'minutes': curDate.getMinutes(), 'seconds': curDate.getSeconds()};
                 }
-            });
-         var end = laydate.render({
-               elem: '#endDate',
-               min : nowTime,
-               type: 'datetime',
-               done:function(value,date){
-                   if($.trim(value) == ''){
-                       //var curDate = new Date();
-                       //date = {'date': curDate.getDate(), 'month': curDate.getMonth()+1, 'year': curDate.getFullYear(), 'hours': curDate.getHours(), 'minutes': curDate.getMinutes(), 'seconds': curDate.getSeconds()};
+                endMax = end.config.max;
+                end.config.min = date;
+                end.config.min.month = date.month -1;
+            }
+        });
+        var end = laydate.render({
+            elem: '#sendDate',
+            min : nowTime,
+            type: 'datetime',
+            trigger: 'click',
+            done:function(value,date){
+                if($.trim(value) == ''){
+                    //var curDate = new Date();
+                    //date = {'date': curDate.getDate(), 'month': curDate.getMonth()+1, 'year': curDate.getFullYear(), 'hours': curDate.getHours(), 'minutes': curDate.getMinutes(), 'seconds': curDate.getSeconds()};
 
-                       date = {'date': 31, 'month': 12, 'year': 2099, 'hours': 0, 'minutes': 0, 'seconds': 0};
-                   }
-                   start.config.max = date;
-                   start.config.max.month = date.month -1;
-               }
-            });
-
+                    date = {'date': 31, 'month': 12, 'year': 2099, 'hours': 0, 'minutes': 0, 'seconds': 0};
+                }
+                start.config.max = date;
+                start.config.max.month = date.month -1;
+            }
+        });
     });
 </script>
 </html>
