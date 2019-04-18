@@ -96,13 +96,13 @@
             <div class="layui-inline">
               <label class="layui-form-label">开始时间</label>
               <div class="layui-input-inline">
-                <input type="text" name="startDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${takeOff.startDate}"/>" class="layui-input" id="sstartDate" >
+                <input type="text" name="startDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${takeOff.startDate}"/>" class="layui-input" id="sstartDate" >
               </div>
             </div>
             <div class="layui-inline">
               <label class="layui-form-label">结束时间</label>
               <div class="layui-input-inline">
-                <input type="text" name="endDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${takeOff.endDate}"/>" class="layui-input" id="sendDate" >
+                <input type="text" name="endDate" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${takeOff.endDate}"/>" class="layui-input" id="sendDate" >
               </div>
             </div>
           </div>

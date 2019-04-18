@@ -62,7 +62,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if( user != null ) {
             TakeOff takeOff = userService.findTakeOffByUserId(user.getUserId());
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            System.out.println(takeOff.getOffStatus());
+            //System.out.println(takeOff.getOffStatus());
             if (takeOff == null) {
                 List<String> list = new ArrayList<>(10);
                 list.add("apply");
