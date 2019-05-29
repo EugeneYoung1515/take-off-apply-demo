@@ -293,55 +293,5 @@
     select * from t_take_off where off_status = #{offStatus} order by off_id desc limit 1
   </select>
 
-  <resultMap id="TakeOffBaseResultMap" type="com.smart.domain.TakeOff" extends="BaseResultMap">
-    <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-    <result column="first_user_name" jdbcType="VARCHAR" property="firstCheckUserName"/>
-    <result column="second_user_name" jdbcType="VARCHAR" property="secondCheckUserName"/>
-    <result column="third_user_name" jdbcType="VARCHAR" property="thirdCheckUserName"/>
-  </resultMap>
 
-
-  <select id="selectAllTakeOffByUserId" resultMap="TakeOffBaseResultMap">
-select
-off_id, off_type, start_date, end_date, off_reason, t.user_id, first_check_user_id,
-first_check_user_opinion, second_check_user_id, second_check_user_opinion, third_check_user_id,
-third_check_user_opinion, first_check_datetime, second_check_datetime, third_check_datetime,
-apply_datetime, off_status, is_accepted_by_first, is_accepted_by_second, is_accepted_by_third,
-previous_is_not_accepted_off_id,
-b.user_name as user_name,
-p.user_name as first_user_name,
-pp.user_name as second_user_name,
-ppp.user_name as third_user_name
-from (select * from t_take_off where user_id = #{param1} order by off_id desc limit #{param2}, #{param3}) as t left outer join t_user as b on t.user_id = b.user_id left outer join t_user as p
-on t.first_check_user_id = p.user_id left outer join t_user as pp
-on t.second_check_user_id = pp.user_id left outer join t_user as ppp
-on t.third_check_user_id = ppp.user_id
-  </select>
-
-  <insert id="insertReturnId" parameterType="com.smart.domain.TakeOff" useGeneratedKeys="true" keyColumn="off_id" keyProperty="offId">
-    insert into t_take_off (off_id, off_type, start_date,
-    end_date, off_reason, user_id,
-    first_check_user_id, first_check_user_opinion,
-    second_check_user_id, second_check_user_opinion,
-    third_check_user_id, third_check_user_opinion,
-    first_check_datetime, second_check_datetime,
-    third_check_datetime, apply_datetime,
-    off_status, is_accepted_by_first, is_accepted_by_second,
-    is_accepted_by_third, previous_is_not_accepted_off_id
-    )
-    values (#{offId,jdbcType=INTEGER}, #{offType,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP},
-    #{endDate,jdbcType=TIMESTAMP}, #{offReason,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
-    #{firstCheckUserId,jdbcType=INTEGER}, #{firstCheckUserOpinion,jdbcType=VARCHAR},
-    #{secondCheckUserId,jdbcType=INTEGER}, #{secondCheckUserOpinion,jdbcType=VARCHAR},
-    #{thirdCheckUserId,jdbcType=INTEGER}, #{thirdCheckUserOpinion,jdbcType=VARCHAR},
-    #{firstCheckDatetime,jdbcType=TIMESTAMP}, #{secondCheckDatetime,jdbcType=TIMESTAMP},
-    #{thirdCheckDatetime,jdbcType=TIMESTAMP}, #{applyDatetime,jdbcType=TIMESTAMP},
-    #{offStatus,jdbcType=INTEGER}, #{isAcceptedByFirst,jdbcType=INTEGER}, #{isAcceptedBySecond,jdbcType=INTEGER},
-    #{isAcceptedByThird,jdbcType=INTEGER}, #{previousIsNotAcceptedOffId,jdbcType=INTEGER}
-    )
-  </insert>
-
-  <select id="selectCountTakeOffByUserId" resultType="java.lang.Integer">
-    select count(*) from t_take_off where user_id = #{userId}
-  </select>
 </mapper>
